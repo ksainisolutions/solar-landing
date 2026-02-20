@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solaranlagen-Anfrage | Solar</title>
+  <meta name="description" content="Kostenlose Eignungsprüfung für Ihre Solaranlage — inklusive Fördercheck. Ergebnis in Sekunden.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            solar: {
+              50: '#f7fee7',
+              100: '#ecfccb',
+              200: '#d9f99d',
+              300: '#bef264',
+              400: '#a3e635',
+              500: '#84cc16',
+              600: '#65a30d',
+              700: '#4d7c0f',
+              800: '#365314',
+              900: '#1a2e05',
+            },
+            accent: {
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .spinner { border: 4px solid #ecfccb; border-top: 4px solid #65a30d; border-radius: 50%; width: 48px; height: 48px; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-solar-800 text-white">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="text-xl font-bold tracking-tight">Solar</div>
+      <div class="text-sm text-solar-200 hidden sm:block">Ihr Partner für Solarenergie</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-br from-solar-700 to-solar-900 text-white py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">Kostenlose Eignungsprüfung<br class="hidden md:block"> für Ihre Solaranlage</h1>
+      <p class="text-lg md:text-xl text-solar-100 mb-8 max-w-2xl mx-auto">Finden Sie in wenigen Minuten heraus, ob sich eine Solaranlage für Ihr Gebäude lohnt — inklusive Fördercheck.</p>
+      <div class="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm md:text-base">
+        <div class="flex items-center gap-2"><span class="text-accent-400 text-lg">&#10003;</span> Kostenlos &amp; unverbindlich</div>
+        <div class="flex items-center gap-2"><span class="text-accent-400 text-lg">&#10003;</span> Ergebnis in Sekunden</div>
+        <div class="flex items-center gap-2"><span class="text-accent-400 text-lg">&#10003;</span> Inklusive Fördercheck</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="max-w-3xl mx-auto px-4 -mt-8 pb-16">
+    <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10" id="card">
+
+      <!-- FORM -->
+      <form id="solar-form" class="space-y-8" novalidate>
+        <h2 class="text-2xl font-bold text-gray-800">Ihre Angaben</h2>
+
+        <!-- 1 - Kontakt -->
+        <fieldset>
+          <legend class="text-lg font-semibold text-solar-700 mb-3 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-solar-100 text-solar-700 flex items-center justify-center text-sm font-bold">1</span>
+            Kontaktdaten
+          </legend>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="f-name" class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+              <input id="f-name" type="text" name="Name" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none transition" placeholder="Vor- und Nachname">
+            </div>
+            <div>
+              <label for="f-email" class="block text-sm font-medium text-gray-700 mb-1">E-Mail *</label>
+              <input id="f-email" type="email" name="E-Mail" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none transition" placeholder="ihre@email.de">
+            </div>
+            <div>
+              <label for="f-tel" class="block text-sm font-medium text-gray-700 mb-1">Telefon *</label>
+              <input id="f-tel" type="tel" name="Telefon" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none transition" placeholder="+49 ...">
+            </div>
+            <div>
+              <label for="f-plz" class="block text-sm font-medium text-gray-700 mb-1">PLZ und Ort *</label>
+              <input id="f-plz" type="text" name="PLZ und Ort" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none transition" placeholder="z.B. 80331 München">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 2 - Gebäude & Dach -->
+        <fieldset>
+          <legend class="text-lg font-semibold text-solar-700 mb-3 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-solar-100 text-solar-700 flex items-center justify-center text-sm font-bold">2</span>
+            Gebäude &amp; Dach
+          </legend>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="f-geb" class="block text-sm font-medium text-gray-700 mb-1">Gebäudetyp *</label>
+              <select id="f-geb" name="Gebäudetyp" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>Einfamilienhaus</option>
+                <option>Mehrfamilienhaus</option>
+                <option>Gewerbegebäude</option>
+                <option>Sonstiges</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-dach" class="block text-sm font-medium text-gray-700 mb-1">Dachtyp *</label>
+              <select id="f-dach" name="Dachtyp" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>Satteldach</option>
+                <option>Flachdach</option>
+                <option>Pultdach</option>
+                <option>Walmdach</option>
+                <option>Sonstiges / Unsicher</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-ausricht" class="block text-sm font-medium text-gray-700 mb-1">Dachausrichtung *</label>
+              <select id="f-ausricht" name="Dachausrichtung" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>Süd</option>
+                <option>Süd-Ost / Süd-West</option>
+                <option>Ost-West</option>
+                <option>Nord</option>
+                <option>Unbekannt</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-flaeche" class="block text-sm font-medium text-gray-700 mb-1">Geschätzte Dachfläche *</label>
+              <div class="relative">
+                <input id="f-flaeche" type="number" name="Dachfläche" required min="1" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none pr-12 transition" placeholder="z.B. 60">
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">m²</span>
+              </div>
+            </div>
+            <div class="md:col-span-2">
+              <label for="f-schatten" class="block text-sm font-medium text-gray-700 mb-1">Verschattung *</label>
+              <select id="f-schatten" name="Verschattung" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>Keine Verschattung</option>
+                <option>Teilweise verschattet</option>
+                <option>Stark verschattet</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 3 - Energie & Extras -->
+        <fieldset>
+          <legend class="text-lg font-semibold text-solar-700 mb-3 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-solar-100 text-solar-700 flex items-center justify-center text-sm font-bold">3</span>
+            Energie &amp; Zusatzoptionen
+          </legend>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="f-strom" class="block text-sm font-medium text-gray-700 mb-1">Jährl. Stromverbrauch *</label>
+              <div class="relative">
+                <input id="f-strom" type="number" name="Stromverbrauch" required min="0" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none pr-16 transition" placeholder="z.B. 4000">
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">kWh</span>
+              </div>
+            </div>
+            <div>
+              <label for="f-speicher" class="block text-sm font-medium text-gray-700 mb-1">Batteriespeicher *</label>
+              <select id="f-speicher" name="Batteriespeicher" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>Ja, interessiert mich</option>
+                <option>Nein</option>
+                <option>Unsicher</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-wallbox" class="block text-sm font-medium text-gray-700 mb-1">Wallbox / E-Auto *</label>
+              <select id="f-wallbox" name="Wallbox" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>Ja, vorhanden oder geplant</option>
+                <option>Nein</option>
+                <option>Eventuell in Zukunft</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-eigentum" class="block text-sm font-medium text-gray-700 mb-1">Eigentumsverhältnis *</label>
+              <select id="f-eigentum" name="Eigentum" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>Eigentümer</option>
+                <option>Mieter</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label for="f-zeit" class="block text-sm font-medium text-gray-700 mb-1">Zeitrahmen *</label>
+              <select id="f-zeit" name="Zeitrahmen" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none bg-white transition">
+                <option value="">Bitte wählen...</option>
+                <option>So schnell wie möglich</option>
+                <option>In 3-6 Monaten</option>
+                <option>In 6-12 Monaten</option>
+                <option>Erst einmal nur informieren</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Anmerkungen -->
+        <div>
+          <label for="f-anm" class="block text-sm font-medium text-gray-700 mb-1">Anmerkungen</label>
+          <textarea id="f-anm" name="Anmerkungen" rows="3" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-solar-500 focus:border-solar-500 outline-none transition" placeholder="Weitere Informationen oder Fragen (optional)"></textarea>
+        </div>
+
+        <!-- Datenschutz -->
+        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="f-dsgvo" name="Datenschutz" required class="mt-1 w-5 h-5 text-solar-600 border-gray-300 rounded focus:ring-solar-500 shrink-0">
+            <span class="text-sm text-gray-600 leading-relaxed">
+              Ich stimme der Verarbeitung meiner personenbezogenen Daten gemäß der
+              <a href="#" class="text-solar-600 underline hover:text-solar-800">Datenschutzerklärung</a> zu.
+              Meine Daten werden ausschließlich zur Bearbeitung meiner Anfrage verwendet
+              und nicht an Dritte weitergegeben. *
+            </span>
+          </label>
+        </div>
+
+        <!-- Error message -->
+        <div id="form-error" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 text-sm"></div>
+
+        <!-- Submit -->
+        <button type="submit" id="submit-btn" class="w-full bg-accent-500 hover:bg-accent-600 active:bg-accent-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all shadow-lg hover:shadow-xl cursor-pointer">
+          Kostenlose Eignungsprüfung anfordern
+        </button>
+      </form>
+
+      <!-- LOADING -->
+      <div id="loading" class="hidden text-center py-16">
+        <div class="spinner mx-auto mb-6"></div>
+        <p class="text-lg font-medium text-gray-700">Ihre Anfrage wird ausgewertet...</p>
+        <p class="text-sm text-gray-400 mt-2">Dies dauert nur wenige Sekunden.</p>
+      </div>
+
+      <!-- RESULT -->
+      <div id="result" class="hidden py-8">
+        <div id="result-content" class="prose prose-lg max-w-none text-gray-700"></div>
+        <div class="mt-8 pt-6 border-t border-gray-200 text-center">
+          <button onclick="location.reload()" class="text-solar-600 hover:text-solar-800 font-medium underline cursor-pointer">Neue Anfrage stellen</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 border-t border-gray-200">
+    <div class="max-w-5xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
+      <p>&copy; 2026 Solar. Alle Rechte vorbehalten.</p>
+      <div class="mt-3 space-x-6">
+        <a href="#" class="hover:text-gray-700 transition">Impressum</a>
+        <a href="#" class="hover:text-gray-700 transition">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================================
+    // KONFIGURATION - Hier deine n8n Webhook-URL eintragen
+    // ============================================================
+    const WEBHOOK_URL = 'https://ksaini.app.n8n.cloud/webhook-test/solar-lead';
+    // Beispiel: 'https://deine-instanz.app.n8n.cloud/webhook/solar-lead'
+    // ============================================================
+
+    const form = document.getElementById('solar-form');
+    const loading = document.getElementById('loading');
+    const result = document.getElementById('result');
+    const resultContent = document.getElementById('result-content');
+    const formError = document.getElementById('form-error');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      formError.classList.add('hidden');
+
+      // Browser-native validation
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // Collect form data as JSON
+      var fd = new FormData(form);
+      var data = {};
+      fd.forEach(function (value, key) {
+        if (key !== 'Datenschutz') {
+          data[key] = value;
+        }
+      });
+      data['Datenschutz'] = 'Einwilligung erteilt';
+
+      // Show loading
+      form.classList.add('hidden');
+      loading.classList.remove('hidden');
+
+      try {
+        var response = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+          throw new Error('Server-Fehler: ' + response.status);
+        }
+
+        var responseData = await response.json();
+
+        // Extract formSubmittedText from response
+        var message = '';
+        if (responseData && responseData.formSubmittedText) {
+          message = responseData.formSubmittedText;
+        } else if (Array.isArray(responseData) && responseData.length > 0 && responseData[0].formSubmittedText) {
+          message = responseData[0].formSubmittedText;
+        } else if (responseData && responseData.AntwortText) {
+          message = responseData.AntwortText;
+        } else {
+          message = '<h2>Vielen Dank!</h2><p>Ihre Anfrage wurde erfolgreich übermittelt. Wir melden uns in Kürze bei Ihnen.</p>';
+        }
+
+        loading.classList.add('hidden');
+        result.classList.remove('hidden');
+        resultContent.innerHTML = message;
+
+      } catch (error) {
+        loading.classList.add('hidden');
+        form.classList.remove('hidden');
+        formError.textContent = 'Es gab ein Problem beim Senden Ihrer Anfrage. Bitte versuchen Sie es erneut oder kontaktieren Sie uns telefonisch.';
+        formError.classList.remove('hidden');
+        window.scrollTo({ top: formError.offsetTop - 100, behavior: 'smooth' });
+      }
+    });
+  </script>
+
+</body>
+</html>
